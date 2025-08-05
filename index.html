@@ -24,7 +24,7 @@
     <meta name="twitter:title" content="2025 科技系新生手冊 – 彰化師大" />
     <meta name="twitter:description" content="最完整的彰化師大科技系新生入門指南..." />
     <meta name="twitter:image" content="/icons/emt-logo-1200x630.png" />
-    
+
     <style>
         :root {
             --primary-color: #aaaada;
@@ -57,88 +57,6 @@
             margin-left: 0.8rem;
             margin-bottom: 1rem;
             padding-inline-start: 0.6rem;
-        }
-
-        /* 載入動畫 */
-        .loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.5s ease-out;
-        }
-
-        .loading-content {
-            text-align: center;
-        }
-
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 3px solid rgba(99, 102, 241, 0.3);
-            border-top: 3px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 20px;
-        }
-
-        @keyframes spin {
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* 內容載入動畫 */
-        .content-loading {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(15, 23, 42, 0.9);
-            backdrop-filter: blur(20px);
-            border-radius: 20px;
-            padding: 2rem;
-            z-index: 9999;
-            display: none;
-            text-align: center;
-            border: 1px solid var(--glass-border);
-        }
-
-        .content-loading.show {
-            display: block;
-            animation: fadeIn 0.3s ease-out;
-        }
-
-        .content-loading .spinner {
-            width: 40px;
-            height: 40px;
-            border: 2px solid rgba(99, 102, 241, 0.3);
-            border-top: 2px solid var(--primary-color);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translate(-50%, -50%) scale(0.9);
-            }
-
-            to {
-                opacity: 1;
-                transform: translate(-50%, -50%) scale(1);
-            }
         }
 
         /* 泡泡背景動畫 */
@@ -202,7 +120,6 @@
             right: 0;
             height: 60px;
             background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--glass-border);
             z-index: 1000;
             display: flex;
@@ -214,7 +131,6 @@
 
         .navbar.scrolled {
             background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(30px);
         }
 
         .navbar-brand {
@@ -323,7 +239,6 @@
             text-decoration: none;
             border-radius: 50px;
             transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
             animation: fadeInUp 1s ease-out 0.4s both;
             font-size: clamp(0.9rem, 2.5vw, 1rem);
             min-width: 200px;
@@ -364,14 +279,12 @@
             margin-bottom: 3rem;
             padding: 2rem;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
             border-radius: 20px;
             border: 1px solid var(--glass-border);
         }
 
         .letter-body {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 2rem;
@@ -423,7 +336,6 @@
 
         .category-card {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 2rem;
@@ -490,7 +402,6 @@
             justify-content: center;
             margin-bottom: 2rem;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
             border-radius: 15px;
             padding: 0.5rem;
             border: 1px solid var(--glass-border);
@@ -519,7 +430,6 @@
         .tab-content {
             display: none;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 2rem;
@@ -547,14 +457,12 @@
             margin-bottom: 3rem;
             padding: 2rem;
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
             border-radius: 20px;
             border: 1px solid var(--glass-border);
         }
 
         .article-content {
             background: var(--glass-bg);
-            backdrop-filter: blur(20px);
             border: 1px solid var(--glass-border);
             border-radius: 20px;
             padding: 2rem;
@@ -822,24 +730,114 @@
             max-width: 900px;
         }
     </style>
+    <style>
+        /* 所有主要區塊初始隱藏 */
+        .homepage,
+        .letter-content,
+        .handbook-index,
+        .subject-guide,
+        .article-detail {
+            opacity: 0;
+        }
+
+        /* 當 .active 被加上時，執行淡入整頁背景 */
+        .homepage.active,
+        .letter-content.active,
+        .handbook-index.active,
+        .subject-guide.active,
+        .article-detail.active {
+            animation: fadeInSection 0.5s ease-out forwards;
+        }
+
+        /* 後續依序讓特定子元素「延遲」淡入 */
+        @keyframes fadeInSection {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* 每個 section 裡，視需要對標題、副標題、內容再多一層淡入與向上移動 */
+        .homepage.active .hero-title {
+            animation: fadeInUp 0.5s ease-out 0.3s both;
+        }
+
+        .homepage.active .hero-subtitle {
+            animation: fadeInUp 0.5s ease-out 0.5s both;
+        }
+
+        .homepage.active .cta-button {
+            animation: fadeInUp 0.5s ease-out 0.7s both;
+        }
+
+        /* 信件內容區塊過場動畫：標題、內文、按鈕依序淡入 */
+        .letter-content.active .letter-header {
+            animation: fadeInUp 0.5s ease-out 0.3s both;
+        }
+
+        .letter-content.active .letter-body {
+            animation: fadeInUp 0.5s ease-out 0.5s both;
+        }
+
+        .letter-content.active .letter-cta {
+            animation: fadeInUp 0.5s ease-out 0.7s both;
+        }
+
+        /* —— 手冊索引（.handbook-index） —— */
+        .handbook-index.active .index-title {
+            animation: fadeInUp 0.5s ease-out 0.3s both;
+        }
+
+        .handbook-index.active .category-grid {
+            animation: fadeInUp 0.5s ease-out 0.5s both;
+        }
+
+        .handbook-index.active .category-card {
+            animation: fadeInUp 0.5s ease-out 0.7s both;
+        }
+
+        /* —— 學科指南（.subject-guide） —— */
+        .subject-guide.active .article-header {
+            animation: fadeInUp 0.3s ease-out 0.2s both;
+        }
+
+        .subject-guide.active .subject-tabs {
+            animation: fadeInUp 0.3s ease-out 0.2s both;
+        }
+
+        /* 只有目前顯示的 tab-content 會帶 .active */
+        .subject-guide.active .tab-content.active {
+            animation: fadeInUp 0.2s ease-out 0.2s both;
+        }
+
+        /* —— 文章詳情（.article-detail） —— */
+        .article-detail.active .article-header {
+            animation: fadeInUp 0.5s ease-out 0.3s both;
+        }
+
+        .article-detail.active .article-content {
+            animation: fadeInUp 0.5s ease-out 0.5s both;
+        }
+
+        /* 底下可以重用於所有子元素 */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
-    <!-- 載入畫面 -->
-    <div class="loading-screen" id="loadingScreen">
-        <div class="loading-content">
-            <div class="loading-spinner"></div>
-            <h2>載入中...</h2>
-            <p>正在準備您的新生手冊</p>
-        </div>
-    </div>
-
-    <!-- 內容載入動畫 -->
-    <div class="content-loading" id="contentLoading">
-        <div class="spinner"></div>
-        <p>載入中...</p>
-    </div>
-
     <!-- 泡泡背景 -->
     <div class="bubbles">
         <div class="bubble"></div>
@@ -1310,7 +1308,6 @@
         let navigationHistory = [];
 
         /* DOM 參照 */
-        const loadingScreen = document.getElementById('loadingScreen');
         const contentLoading = document.getElementById('contentLoading');
         const navbar = document.getElementById('navbar');
         const progressBar = document.getElementById('progressBar');
@@ -1324,12 +1321,6 @@
 
         /* 初始化 */
         document.addEventListener('DOMContentLoaded', function () {
-            // 載入動畫
-            setTimeout(() => {
-                loadingScreen.style.opacity = '0';
-                setTimeout(() => loadingScreen.style.display = 'none', 500);
-            }, 2000);
-
             generateBubbles();
             bindEvents();
 
@@ -1378,10 +1369,6 @@
             }
             renderByUrl(false);
         });
-
-        /* 載入動畫控制 */
-        function showContentLoading() { contentLoading.classList.add('show'); }
-        function hideContentLoading() { contentLoading.classList.remove('show'); }
 
         /* 背景泡泡 */
         function generateBubbles() {
@@ -1470,47 +1457,42 @@
             if (typewriter) {
                 typewriter.style.animation = 'none';
                 setTimeout(() => typewriter.style.animation = 'typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite', 10);
+                homepage.classList.add('active');
             }
         }
 
         function showLetter(updateURL = true) {
             if (updateURL) updateQuery({ view: 'letter', cat: null, id: null });
-            showContentLoading();
             setTimeout(() => {
                 navigationHistory.push(currentView);
                 currentView = 'letter';
                 hideAllPages();
                 letterContent.classList.add('active');
                 backButton.classList.add('active');
-                hideContentLoading();
                 scrollToTop();
             }, 300);
         }
 
         function showHandbookIndex(updateURL = true) {
             if (updateURL) updateQuery({ view: 'index', cat: null, id: null });
-            showContentLoading();
             setTimeout(() => {
                 navigationHistory.push(currentView);
                 currentView = 'index';
                 hideAllPages();
                 handbookIndex.classList.add('active');
                 backButton.classList.add('active');
-                hideContentLoading();
                 scrollToTop();
             }, 300);
         }
 
         function showSubjectGuide(updateURL = true) {
             if (updateURL) updateQuery({ view: 'subject', cat: null, id: null });
-            showContentLoading();
             setTimeout(() => {
                 navigationHistory.push(currentView);
                 currentView = 'subject';
                 hideAllPages();
                 subjectGuide.classList.add('active');
                 backButton.classList.add('active');
-                hideContentLoading();
                 scrollToTop();
             }, 300);
         }
@@ -1519,14 +1501,12 @@
             if (updateURL) updateQuery({ view: 'category', cat: category, id: null });
             if (category === 'academic') { showSubjectGuide(updateURL); return; }
 
-            showContentLoading();
             setTimeout(() => {
                 navigationHistory.push(currentView);
                 currentView = 'category';
                 currentCategory = category;
                 hideAllPages();
                 createCategoryPage(category);
-                hideContentLoading();
                 scrollToTop();
             }, 300);
         }
@@ -1571,14 +1551,12 @@
 
         function showArticle(articleId, updateURL = true) {
             if (updateURL) updateQuery({ view: 'article', id: articleId, cat: null });
-            showContentLoading();
             setTimeout(() => {
                 let article = null;
                 for (const categoryKey in articles) {
                     article = articles[categoryKey].find(a => a.id === articleId);
                     if (article) break;
                 }
-                if (!article) { hideContentLoading(); return; }
 
                 navigationHistory.push(currentView);
                 currentView = 'article';
@@ -1593,7 +1571,6 @@
                 const template = document.getElementById(articleId + 'Template');
                 if (template) document.getElementById('articleContent').innerHTML = template.innerHTML;
 
-                hideContentLoading();
                 scrollToTop();
             }, 300);
         }
