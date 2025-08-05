@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025科技系新生手冊</title>
+    <!-- 不用看了，這裡沒有你要的東西 -->
+    <!-- 想多學東西就看看文章內容吧 -->
+    <!-- 想成為優秀的人，值得自己努力 -->
+    <!-- -- by 學長姐 2025/08 -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#8b5cf6">
+
+    <style>
+        :root {
+            --primary-color: #aaaada;
+            --secondary-color: #8b5cf6;
+            --accent-color: #9adbeb;
+            --bg-dark: #0f172a;
+            --bg-light: #1e293b;
+            --text-primary: #ffffff;
+            --text-secondary: #cbd5e1;
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, var(--bg-dark) 0%, var(--bg-light) 100%);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+
+        ul {
+            margin-left: 0.8rem;
+            margin-bottom: 1rem;
+            padding-inline-start: 0.6rem;
+        }
+
+        /* 載入動畫 */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .loading-content {
+            text-align: center;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(99, 102, 241, 0.3);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* 內容載入動畫 */
+        .content-loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 2rem;
+            z-index: 9999;
+            display: none;
+            text-align: center;
+            border: 1px solid var(--glass-border);
+        }
+
+        .content-loading.show {
+            display: block;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .content-loading .spinner {
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-top: 2px solid var(--primary-color);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        /* 泡泡背景動畫 */
+        .bubbles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.6;
+            filter: blur(1px);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bubble:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .bubble:nth-child(2) {
+            width: 120px;
+            height: 120px;
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .bubble:nth-child(3) {
+            width: 60px;
+            height: 60px;
+            background: rgba(6, 182, 212, 0.4);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            33% {
+                transform: translateY(-30px) rotate(120deg);
+            }
+
+            66% {
+                transform: translateY(-60px) rotate(240deg);
+            }
+        }
+
+        /* 導航欄 */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(30px);
+        }
+
+        .navbar-brand {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            list-style: none;
+            margin-bottom: 0;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+            position: relative;
+            padding: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary-color);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        /* 進度條 */
+        .progress-bar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            height: 3px;
+            background: var(--primary-color);
+            z-index: 999;
+            transition: width 0.3s ease;
+        }
+
+        /* 主要內容區域 */
+        .main-content {
+            margin-top: 60px;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* 首頁 */
+        .homepage {
+            min-height: calc(100vh - 60px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem 1rem;
+        }
+
+        .hero-content {
+            max-width: 600px;
+            width: 100%;
+        }
+
+        .hero-title {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.2rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s both;
+            padding: 0 1rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            margin-top: 1rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: 2px solid var(--primary-color);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 1s ease-out 0.4s both;
+            font-size: clamp(0.9rem, 2.5vw, 1rem);
+            min-width: 200px;
+        }
+
+        .cta-button:hover {
+            background: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* 信件內容 */
+        .letter-content {
+            display: none;
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .letter-content.active {
+            display: block;
+        }
+
+        .letter-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .letter-body {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .letter-body h3 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem 0;
+            font-size: 1.2rem;
+        }
+
+        .letter-body p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .letter-cta {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        /* 手冊索引 */
+        .handbook-index {
+            display: none;
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .handbook-index.active {
+            display: block;
+        }
+
+        .index-title {
+            text-align: center;
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            color: var(--primary-color);
+            margin-bottom: 3rem;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+        }
+
+        .category-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .category-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .category-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+
+        .category-description {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* 學科指南頁面 */
+        .subject-guide {
+            display: none;
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .subject-guide.active {
+            display: block;
+        }
+
+        .subject-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 15px;
+            padding: 0.5rem;
+            border: 1px solid var(--glass-border);
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .tab-button {
+            flex: 1;
+            min-width: 120px;
+            padding: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .tab-button.active {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            line-height: 1.8;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* 文章詳情頁 */
+        .article-detail {
+            display: none;
+            padding: 2rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .article-detail.active {
+            display: block;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .article-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2rem;
+            line-height: 1.8;
+        }
+
+        .article-content h2 {
+            color: var(--primary-color);
+            margin: 2rem 0 1rem 0;
+            font-size: clamp(1.2rem, 3vw, 1.5rem);
+        }
+
+        .article-content h3 {
+            color: var(--accent-color);
+            margin: 1.5rem 0 1rem 0;
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+        }
+
+        .article-content p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 1rem 0 1rem 1rem;
+            color: var(--text-secondary);
+        }
+
+        .article-content li {
+            margin-bottom: 0.5rem;
+            padding-left: 0.5rem;
+        }
+
+        .article-content a {
+            color: var(--accent-color);
+            text-decoration: none;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.3s ease;
+            word-break: break-all;
+        }
+
+        .article-content a:hover {
+            border-bottom-color: var(--accent-color);
+        }
+
+        /* 按鈕 */
+        .back-button {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            touch-action: manipulation;
+        }
+
+        .back-button.active {
+            display: flex;
+        }
+
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            width: 50px;
+            height: 50px;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            z-index: 1000;
+            touch-action: manipulation;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 30px rgba(6, 182, 212, 0.3);
+        }
+
+        /* 手機端優化 */
+        @media (max-width: 768px) {
+            .navbar {
+                height: 50px;
+                padding: 0 0.5rem;
+            }
+
+            .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .navbar-nav {
+                gap: 0.5rem;
+            }
+
+            .nav-link {
+                font-size: 0.8rem;
+                padding: 0.3rem;
+            }
+
+            .main-content {
+                margin-top: 50px;
+            }
+
+            .progress-bar {
+                top: 50px;
+            }
+
+            .homepage {
+                min-height: calc(100vh - 50px);
+                padding: 1rem 0.5rem;
+            }
+
+            .hero-content {
+                padding: 0 0.5rem;
+            }
+
+            .category-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .category-card {
+                padding: 1.5rem;
+            }
+
+            .tab-button {
+                min-width: auto;
+                padding: 0.8rem;
+            }
+
+            .article-content,
+            .letter-body,
+            .tab-content {
+                padding: 1.5rem;
+            }
+
+            .article-content ul,
+            .article-content ol {
+                margin-left: 0.5rem;
+            }
+
+            .back-button,
+            .scroll-top {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+            }
+        }
+
+        /* 極小螢幕優化 */
+        @media (max-width: 480px) {
+            .navbar-nav {
+                gap: 0.2rem;
+            }
+
+            .nav-link {
+                font-size: 0.7rem;
+                padding: 0.2rem;
+            }
+
+            .hero-title {
+                font-size: 1.8rem;
+            }
+
+            .hero-subtitle {
+                font-size: 0.7rem;
+            }
+
+            .category-card {
+                padding: 1rem;
+            }
+
+            .category-icon {
+                font-size: 2rem;
+            }
+
+            .category-title {
+                font-size: 1.2rem;
+            }
+        }
+
+        /* 無障礙設計 */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* 焦點樣式 */
+        .nav-link:focus,
+        .cta-button:focus,
+        .category-card:focus,
+        .tab-button:focus,
+        .back-button:focus,
+        .scroll-top:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+
+        /* 打字機效果 */
+        .typewriter {
+            overflow: hidden;
+            border-right: 0.15em solid var(--primary-color);
+            white-space: nowrap;
+            margin: 0 auto;
+            letter-spacing: 0.15em;
+            animation: typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: var(--primary-color);
+            }
+        }
+
+        #handbookIndex {
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 載入畫面 -->
+    <div class="loading-screen" id="loadingScreen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2>載入中...</h2>
+            <p>正在準備您的新生手冊</p>
+        </div>
+    </div>
+
+    <!-- 內容載入動畫 -->
+    <div class="content-loading" id="contentLoading">
+        <div class="spinner"></div>
+        <p>載入中...</p>
+    </div>
+
+    <!-- 泡泡背景 -->
+    <div class="bubbles">
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+        <div class="bubble"></div>
+    </div>
+
+    <!-- 導航欄 -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="navbar-brand" onclick="showHomepage(); return false;">2025科技系新生手冊</a>
+        <ul class="navbar-nav">
+            <li><a href="#" class="nav-link" onclick="showHomepage(); return false;">首頁</a></li>
+            <li><a href="#" class="nav-link" onclick="showHandbookIndex(); return false;">手冊</a></li>
+            <li><a href="#" class="nav-link" onclick="showCategory('life'); return false;">生活</a></li>
+            <li><a href="#" class="nav-link" onclick="showSubjectGuide(); return false;">學科</a></li>
+        </ul>
+    </nav>
+
+    <!-- 進度條 -->
+    <div class="progress-bar" id="progressBar"></div>
+
+    <!-- 主要內容 -->
+    <main class="main-content">
+        <!-- 首頁 -->
+        <section class="homepage" id="homepage">
+            <div class="hero-content">
+                <h1 class="hero-title">歡迎加入彰化師大</h1>
+                <p class="hero-subtitle typewriter">即使路途遙遠，但我們的汗水不會白費，持續努力向前</p>
+                <a href="#" class="cta-button" onclick="showLetter(); return false;">
+                    點我打開信件
+                </a>
+            </div>
+        </section>
+
+        <!-- 信件內容 -->
+        <section class="letter-content" id="letterContent">
+            <div class="letter-header">
+                <h1>給科技系學弟妹的話</h1>
+                <p>2025年8月撰寫</p>
+            </div>
+            <div class="letter-body">
+                <h3>親愛的學弟妹們：</h3>
+                <p>嗨～各位即將進入科技系的學弟妹們！這裡是原本工教系的學長姐，想留下一封信方便以後大家可以更適應這個大家庭。</p>
+
+                <p>首先，不管你來自什麼地方，從現在開始一視同仁，我們都是彰化師大的一份子。在過去這幾年，不論是通識、教程、專業課，我體驗到大部分人都還是很和善。</p>
+
+                <p><strong>千萬不要覺得自己低人一等，努力奮發向上，多交流才是更好的選擇。</strong></p>
+
+                <p>不要把自己侷限在框架中，努力擴展框架學習更多元的東西吧。無論如何，在正式進入學校之前有幾點是你要注意的，我們準備了完整的手冊來幫助大家。</p>
+
+                <h3>給學弟妹的建議：</h3>
+                <p>大學是一個全新的開始，也是培養獨立思考和自主學習能力的重要階段。希望大家能夠：</p>
+                <ul>
+                    <li>主動學習，不要害怕提問</li>
+                    <li>多參與校內外活動，擴展人際關係</li>
+                    <li>善用學校資源，包括圖書館、實驗室等</li>
+                    <li>培養時間管理能力，平衡學習與生活</li>
+                    <li>保持好奇心，勇於嘗試新事物</li>
+                </ul>
+
+                <p>記住，每個人都是零基礎開始的，有興趣就要主動抓住機會。</p>
+                <p>這些經驗對未來都是重要的加分項！</p>
+
+                <p style="text-align: right; font-style: italic; margin-top: 2rem;">
+                    祝福大家在彰師大的求學路上順利！<br>
+                    科技系學長姐 敬上
+                </p>
+                <div class="letter-cta">
+                    <a href="#" class="cta-button" onclick="showHandbookIndex(); return false;">
+                        開始閱讀手冊
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 手冊索引 -->
+        <section class="handbook-index" id="handbookIndex">
+            <h2 class="index-title">新生手冊索引</h2>
+            <div class="category-grid">
+                <div class="category-card" onclick="showSubjectGuide()" tabindex="0">
+                    <span class="category-icon">📚</span>
+                    <h3 class="category-title">學科資訊</h3>
+                    <p class="category-description">電機組與機械組的課程準備、學習重點、實用工具推薦</p>
+                </div>
+
+                <div class="category-card" onclick="showCategory('life')" tabindex="0">
+                    <span class="category-icon">🏠</span>
+                    <h3 class="category-title">校園生活</h3>
+                    <p class="category-description">宿舍生活、學校系統、交通資訊、課外活動機會</p>
+                </div>
+
+                <div class="category-card" onclick="showCategory('stories')" tabindex="0">
+                    <span class="category-icon">💭</span>
+                    <h3 class="category-title">小故事</h3>
+                    <p class="category-description">學長姐的經驗分享、生活建議、給學弟妹的話</p>
+                </div>
+
+                <div class="category-card" onclick="showCategory('requirements')" tabindex="0">
+                    <span class="category-icon">🎯</span>
+                    <h3 class="category-title">畢業門檻</h3>
+                    <p class="category-description">必修課程、選修學分、通識講座、資訊能力要求</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 學科指南頁面 -->
+        <section class="subject-guide" id="subjectGuide">
+            <div class="article-header">
+                <h1>學科指南</h1>
+                <p>選擇你的組別查看詳細資訊</p>
+            </div>
+
+            <div class="subject-tabs">
+                <button class="tab-button active" onclick="showTab('electrical')">電機組</button>
+                <button class="tab-button" onclick="showTab('mechanical')">機械組</button>
+                <button class="tab-button" onclick="showTab('tools')">學習工具</button>
+            </div>
+
+            <div class="tab-content active" id="electricalTab">
+                <h2>電機組學科指南</h2>
+                <p>無論你是不是跨科來的，都建議先重新讀一遍基本電學和電子學，因為這是基礎課程大學不會再上。</p>
+
+                <h3>重要提醒：</h3>
+                <ul>
+                    <li><strong>基礎課程複習：</strong>務必重新讀一遍基本電學和電子學</li>
+                    <li><strong>英文準備：</strong>大學課程有80%是英文內容，建議準備翻譯筆輔助</li>
+                    <li><strong>電子學重點：</strong>通過比例不高，請務必加強（使用Smith微電子學8版）</li>
+                    <li><strong>微積分預習：</strong>建議先預習，避免跟不上進度</li>
+                    <li><strong>師培資格：</strong>一年級就要想好，記得顧好學科成績</li>
+                </ul>
+
+                <h3>學習資源：</h3>
+                <p>推薦台達磨課師進行電學補修</p>
+
+                <h3>注意事項：</h3>
+                <p>由於多數教授較為年長，如有資訊落差請多包容。教授題目較多樣化，建議多練習其他學校的題目。</p>
+            </div>
+
+            <div class="tab-content" id="mechanicalTab">
+                <h2>機械組學科指南</h2>
+
+                <h3>課程準備：</h3>
+                <ul>
+                    <li><strong>靜力學：</strong>建議保留高職的書籍和筆記，對上課有幫助</li>
+                    <li><strong>程式設計：</strong>學習C++，完全沒學過的同學會比較吃力</li>
+                    <li><strong>計算機概論：</strong>回家務必練習，使用全英文PPT授課</li>
+                </ul>
+
+                <h3>實作課程：</h3>
+                <ul>
+                    <li><strong>機械加工：</strong>建議自備高中工具箱（車刀、端銑刀、游標卡尺等）</li>
+                    <li><strong>電腦輔助製造技術：</strong>老師使用自製軟體，分數不需過度擔心</li>
+                </ul>
+
+                <h3>課堂特色：</h3>
+                <p>計算機概論課程會留時間寫作業（約5題），可當場詢問老師問題，老師很樂意協助解答。</p>
+            </div>
+
+            <div class="tab-content" id="toolsTab">
+                <h2>學習輔助工具推薦</h2>
+
+                <h3>學習管理工具：</h3>
+                <ul>
+                    <li><strong>YPT - Yeolpumta：</strong>時間管理，建立讀書規劃</li>
+                    <li><strong>Forest 專注森林：</strong>專注力提升工具</li>
+                </ul>
+
+                <h3>筆記與協作：</h3>
+                <ul>
+                    <li><strong>HackMD：</strong>支援LaTeX的markdown共筆平台</li>
+                    <li><strong>Notion：</strong>個人筆記整理</li>
+                    <li><strong>OneNote：</strong>微軟筆記應用</li>
+                </ul>
+
+                <h3>開發工具：</h3>
+                <ul>
+                    <li><strong>Visual Studio Code：</strong>程式碼編輯器</li>
+                    <li><strong>Remote by Rewatch：</strong>多人遠端簡報控制</li>
+                </ul>
+
+                <h3>基本需求：</h3>
+                <p>無論如何都至少要有電腦，推薦Windows筆電。</p>
+            </div>
+        </section>
+
+        <!-- 文章詳情 -->
+        <article class="article-detail" id="articleDetail">
+            <div class="article-header">
+                <h1 id="articleTitle"></h1>
+                <div class="article-meta">
+                    <span id="articleCategory"></span>
+                    <span id="articleDate"></span>
+                </div>
+            </div>
+            <div class="article-content" id="articleContent">
+                <!-- 文章內容將通過 JavaScript 動態載入 -->
+            </div>
+        </article>
+    </main>
+
+    <!-- 返回按鈕 -->
+    <button class="back-button" id="backButton" onclick="goBack()" aria-label="返回上一頁">
+        ←
+    </button>
+
+    <!-- 回頂部按鈕 -->
+    <button class="scroll-top" id="scrollTop" onclick="scrollToTop()" aria-label="回到頂部">
+        ↑
+    </button>
+
+    <!-- 文章模板 -->
+    <template id="dormTemplate">
+        <h2>宿舍生活指南 - 十宿</h2>
+
+        <h3>基本資訊：</h3>
+        <p>大一新生多數住在十宿，少數因補助或其他原因可能住九宿。</p>
+
+        <h3>網路使用：</h3>
+        <ul>
+            <li><strong>流量限制：</strong>每個IP每天8GB，超過會被限速24小時</li>
+            <li><strong>大流量需求：</strong>請使用手機網路或校內公共網路</li>
+            <li><strong>網路設定：</strong>參考相關文章進行設定</li>
+        </ul>
+
+        <h3>生活環境：</h3>
+        <ul>
+            <li><strong>生態環境：</strong>山區蚊蟲較多，夏天偶有蛇類出沒，請小心</li>
+            <li><strong>通訊品質：</strong>手機基地台已完成，訊號穩定</li>
+            <li><strong>節能省錢：</strong>冷氣遙控器記得按ECO按鈕</li>
+        </ul>
+
+        <h3>宿舍規範：</h3>
+        <ul>
+            <li><strong>烹飪限制：</strong>除烹飪區外禁止烹飪</li>
+            <li><strong>電器限制：</strong>不可使用500W以上電器（電腦除外）</li>
+            <li><strong>冰箱申請：</strong>需另外付費申請</li>
+        </ul>
+
+        <h3>實用小貼士：</h3>
+        <ul>
+            <li><strong>開門方式：</strong>刷卡→向後拉→向內推（不要壓握把）</li>
+            <li><strong>環境維護：</strong>隔音較差請降低音量，定期清理廁所水垢</li>
+            <li><strong>防潮注意：</strong>水氣較重，電器易損壞需注意</li>
+        </ul>
+
+        <h3>入住建議攜帶：</h3>
+        <ul>
+            <li>兩個空箱子或袋子（搬家用）</li>
+            <li>生活用品（WIFI需求請自購小型AP）</li>
+            <li>打掃用具</li>
+            <li>4號電池（冷氣遙控器用）</li>
+        </ul>
+
+        <h3>相關連結：</h3>
+        <ul>
+            <li><a href="https://www.dcard.tw/f/ncue/p/235947416" target="_blank">宿舍網路設定教學</a></li>
+            <li><a href="https://studentweb.ncue.edu.tw/var/file/3/1003/img/505/252516813.pdf"
+                    target="_blank">宿舍相關規範</a></li>
+        </ul>
+    </template>
+
+    <template id="schoolTemplate">
+        <h2>學校系統與服務</h2>
+
+        <h3>重要系統入口：</h3>
+        <p><strong>主要SSO入口：</strong><a href="https://portal.ncue.edu.tw/portal/home.php"
+                target="_blank">https://portal.ncue.edu.tw/portal/home.php</a></p>
+        <p>可連接教務系統、雲端學院、生涯檔案系統、線上報名系統、請假系統等。</p>
+
+        <h3>登入資訊：</h3>
+        <ul>
+            <li><strong>帳號：</strong>學號</li>
+            <li><strong>密碼：</strong>身分證字號（含大寫英文字母共10碼）</li>
+            <li><strong>外籍學生：</strong>預設密碼為學號</li>
+        </ul>
+
+        <h3>網路連線：</h3>
+        <ul>
+            <li><strong>TANetRoaming：</strong>可註冊網卡MAC位址自動連線</li>
+            <li><strong>eduroam：</strong>國際漫遊網路服務</li>
+        </ul>
+
+        <h3>選課技巧：</h3>
+        <p>建議預選前查好課程代碼，使用「代碼選課」功能，一次可送出5個課程，避免系統壅塞。</p>
+
+        <h3>請假制度：</h3>
+        <p>學生提出→系所與導師確認→成功，但建議提前告知教授。</p>
+
+        <h3>停車申請：</h3>
+        <p>汽機車進入校園需事先申請，汽車可能需要收費。</p>
+
+        <h3>相關系統連結：</h3>
+        <ul>
+            <li><a href="https://webap1.ncue.edu.tw/Dorm/" target="_blank">宿舍申請網站</a></li>
+            <li><a href="https://macreg.ncue.edu.tw/" target="_blank">網卡MAC位址註冊</a></li>
+            <li><a href="https://webapt.ncue.edu.tw/deanv2/other/ob010" target="_blank">課程查詢系統</a></li>
+            <li><a href="https://apss.ncue.edu.tw/student/index.php?ref=1" target="_blank">請假系統</a></li>
+            <li><a href="https://webap1s.ncue.edu.tw/OGS_PARKING/index.aspx" target="_blank">停車申請系統</a></li>
+            <li><a href="https://apss.ncue.edu.tw/sign_up/index.php" target="_blank">活動報名系統</a></li>
+        </ul>
+    </template>
+
+    <template id="requirementsTemplate">
+        <h2>全校共通畢業門檻與要求</h2>
+
+        <h3>110學年度後必修：</h3>
+        <ul>
+            <li><strong>生命探索發展與實踐：</strong>2學分</li>
+            <li><strong>人工智慧及其應用：</strong>2學分</li>
+        </ul>
+
+        <h3>選修課程 12學分：</h3>
+        <h4>a. 素養通識課程 6學分：</h4>
+        <ul>
+            <li>文化美學與文明：2學分</li>
+            <li>生活藝能及應用：2學分</li>
+            <li>素養通識自由選修：2學分</li>
+        </ul>
+
+        <h4>b. 跨學院通識課程 6學分：</h4>
+        <p>任選3個不同學院課程各一門，不能選修所屬學院通識課程。</p>
+
+        <h3>重要畢業門檻：</h3>
+        <ul>
+            <li><strong>通識講座：</strong>需參加12場，建議一年級多參加</li>
+            <li><strong>資訊能力：</strong>有畢業門檻規定，建議以校內課程為主</li>
+        </ul>
+
+        <h3>選課優勢：</h3>
+        <p>科技系幾乎不擋修，可以大一就修其他年級課程，不浪費學分。</p>
+        <p>如果有興趣修外系課程，只是看到可跨班都可以選修喔。</p>
+
+        <h3>相關資訊：</h3>
+        <ul>
+            <li><a href="https://lib2.ncue.edu.tw/files/15-1035-22500,c3433-1.php" target="_blank">通識課程資訊</a></li>
+            <li><a href="https://acadaff.ncue.edu.tw/var/file/2/1002/img/958/course.html" target="_blank">選課專區</a></li>
+            <li><a href="https://olis.ncue.edu.tw/ct.asp?xItem=7858&ctNode=1232&mp=10" target="_blank">資訊能力畢業門檻</a></li>
+        </ul>
+    </template>
+
+    <template id="transportTemplate">
+        <h2>交通方式</h2>
+
+        <h3>距離資訊：</h3>
+        <ul>
+            <li><strong>寶山校區到彰化火車站：</strong>2.5公里，開車8-15分鐘</li>
+            <li><strong>寶山到彰化高鐵站：</strong>32公里，建議從台中高鐵站轉乘（14公里）</li>
+            <li><strong>兩校區距離：</strong>4.5公里，騎車通勤8-20分鐘</li>
+        </ul>
+
+        <h3>交通工具：</h3>
+        <ul>
+            <li><strong>校車：</strong>學校提供免費校車服務</li>
+            <li><strong>機車：</strong>建議自行購買，車站附近有機車托運服務</li>
+            <li><strong>公車：</strong>2路公車，詳細路線請查看彰化客運官網</li>
+        </ul>
+
+        <h3>注意事項：</h3>
+        <p>機車托運需謹慎選擇業者，建議查看評價後再決定。</p>
+
+        <h3>相關連結：</h3>
+        <ul>
+            <li><a href="https://www.changhuabus.com.tw/service_info.asp?id=1166" target="_blank">2路公車路線資訊</a></li>
+            <li><a href="https://generalweb.ncue.edu.tw/p/412-1004-1045.php?Lang=zh-tw" target="_blank">汽車停放申請資訊</a>
+            </li>
+        </ul>
+    </template>
+
+    <template id="opportunitiesTemplate">
+        <h2>課外發展機會</h2>
+
+        <h3>1. 大專生計畫</h3>
+        <ul>
+            <li><strong>申請資格：</strong>大二以上，需教授推薦</li>
+            <li><strong>補貼：</strong>每月6000元，連續八個月</li>
+            <li><strong>收穫：</strong>學習研究方法、設計實驗、成果公開</li>
+        </ul>
+
+        <h3>2. 教授研究合作</h3>
+        <p>建議主動了解教授研究內容，有興趣就主動提出加入。如果從大一開始參與計畫，到大四可能就有豐富的研究成果。</p>
+
+        <h3>3. 線上MOOC課程</h3>
+        <p>推薦免費線上課程資源：</p>
+        <ul>
+            <li><strong>微積分：</strong><a href="https://www.youtube.com/playlist?list=PLC7S3OpzMqm9EbRyd1va2KAP0uepEQdNQ"
+                    target="_blank">中央大學蘇承芳老師預備課程</a></li>
+            <li><strong>進階學習：</strong>
+                <a href="https://mathlibrary.web2.ncku.edu.tw/var/file/216/1216/img/Calculus2015B.pdf"
+                    target="_blank">成功大學數學系講義、
+                </a>
+                <a href="https://sites.google.com/gm.ncue.edu.tw/kwlee" target="_blank">彰師大李國瑋教授課程</a>
+            </li>
+        </ul>
+
+        <h3>4. 校外實習</h3>
+        <p>如果能力足夠提早完成課程，可利用空閒時間尋找業界實習機會。</p>
+
+        <h3>5. 校內工讀</h3>
+        <p>定期查看學校系統工讀機會，或直接到各處室詢問。</p>
+
+        <h3>成功秘訣：</h3>
+        <p><strong>主動出擊！</strong>有興趣就要主動抓住機會，不要害羞。每個人都是零基礎開始，這些經驗對未來都是重要加分項。</p>
+    </template>
+
+    <template id="storiesTemplate">
+        <h2>學長姐經驗分享</h2>
+
+        <h3>學習經驗</h3>
+        <ul>
+            <li>系上有幾個業界背景的教授，如果有興趣建議：
+                <ul>
+                    <li>準備 1～2 頁研究計畫簡述，主動聯繫。</li>
+                    <li>也可以加入教授實驗室，把握小組討論機會。</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>生活建議</h3>
+        <ul>
+            <li>宿舍抽籤：
+                <ul>
+                    <li>大學部新生不用抽，但是舊生要用抽的。</li>
+                    <li>假設在外租屋：租金 NT$3,500–6,500／月。</li>
+                </ul>
+            </li>
+            <li>舒眠小技巧：
+                <ul>
+                    <li>使用耳機鬧鐘 App 有助於不會吵到別人。</li>
+                    <li>手機勿放床頭，減少藍光干擾。</li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>實習流程小提醒</h3>
+        <ul>
+            <li>科技系校外實習可以承認選修學分。</li>
+            <li>如果想要出去開闊視野，可以先將系上必修大部分完成，跟系上提出申請並與公司確認後即可。</li>
+        </ul>
+
+        <h3>給學弟妹的話</h3>
+        <p>大學三年說長不長，如果有機會就多交朋友、爭取資源，來到這裡你已經比很多人都還要好了，仔細規畫下一步，每一步的紀錄都有助於你接下來的選擇，
+            期待你在科技系創造屬於自己的精彩！<br><br>— 學長姐
+        </p>
+    </template>
+
+    <script>
+        /* 文章數據與狀態 */
+        const articles = {
+            life: [
+                { id: 'dorm', title: '宿舍生活指南', excerpt: '十宿生活環境、網路設定、規範制度、入住準備清單...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '6 分鐘' },
+                { id: 'school', title: '學校系統服務', excerpt: 'SSO入口、選課技巧、請假制度、停車申請、網路連線...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '5 分鐘' },
+                { id: 'transport', title: '交通指南', excerpt: '校區距離、交通工具選擇、公車路線、機車托運注意事項...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '3 分鐘' },
+                { id: 'opportunities', title: '課外發展機會', excerpt: '大專生計畫、教授研究、MOOC課程、實習工讀機會...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '7 分鐘' }
+            ],
+            stories: [
+                { id: 'stories', title: '學長姐經驗分享', excerpt: '學習心得、生活建議、資源分享、實習經驗、給學弟妹的話...', category: 'stories', categoryName: '小故事', date: '2025/08', readTime: '5 分鐘' }
+            ],
+            requirements: [
+                { id: 'requirements', title: '畢業門檻要求', excerpt: '必修課程、選修學分、通識講座、資訊能力門檻...', category: 'requirements', categoryName: '畢業門檻', date: '2025/08', readTime: '4 分鐘' }
+            ]
+        };
+
+        /* 全域狀態 */
+        let currentView = 'homepage';
+        let currentCategory = 'all';
+        let navigationHistory = [];
+
+        /* DOM 參照 */
+        const loadingScreen = document.getElementById('loadingScreen');
+        const contentLoading = document.getElementById('contentLoading');
+        const navbar = document.getElementById('navbar');
+        const progressBar = document.getElementById('progressBar');
+        const homepage = document.getElementById('homepage');
+        const letterContent = document.getElementById('letterContent');
+        const handbookIndex = document.getElementById('handbookIndex');
+        const subjectGuide = document.getElementById('subjectGuide');
+        const articleDetail = document.getElementById('articleDetail');
+        const backButton = document.getElementById('backButton');
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        /* 初始化 */
+        document.addEventListener('DOMContentLoaded', function () {
+            // 載入動畫
+            setTimeout(() => {
+                loadingScreen.style.opacity = '0';
+                setTimeout(() => loadingScreen.style.display = 'none', 500);
+            }, 2000);
+
+            generateBubbles();
+            bindEvents();
+
+            // 根據 query-string 載入對應區塊
+            renderByUrl(false);
+        });
+
+        /* URL 與 View 映射 */
+        function updateQuery(paramsObj) {
+            const url = new URL(window.location);
+            Object.keys(paramsObj).forEach(key => {
+                if (paramsObj[key] === null) url.searchParams.delete(key);
+                else url.searchParams.set(key, paramsObj[key]);
+            });
+            history.pushState({}, '', url);
+        }
+
+        function renderByUrl(isPush = true) {
+            const params = new URLSearchParams(location.search);
+            const view = params.get('view') || 'homepage';
+
+            switch (view) {
+                case 'letter': showLetter(!isPush); break;
+                case 'index': showHandbookIndex(!isPush); break;
+                case 'subject': showSubjectGuide(!isPush); break;
+                case 'category': {
+                    const cat = params.get('cat') || 'life';
+                    showCategory(cat, !isPush);
+                    break;
+                }
+                case 'article': {
+                    const id = params.get('id');
+                    id ? showArticle(id, !isPush) : showHomepage(!isPush);
+                    break;
+                }
+                default: showHomepage(!isPush);
+            }
+        }
+
+        window.addEventListener('popstate', () => renderByUrl(false));
+
+        // 當 URL hash 變化（例如末尾多了 #），去掉空 hash 並重新渲染
+        window.addEventListener('hashchange', () => {
+            if (location.hash === '#') {
+                history.replaceState({}, '', location.pathname + location.search);
+            }
+            renderByUrl(false);
+        });
+
+        /* 載入動畫控制 */
+        function showContentLoading() { contentLoading.classList.add('show'); }
+        function hideContentLoading() { contentLoading.classList.remove('show'); }
+
+        /* 背景泡泡 */
+        function generateBubbles() {
+            const bubblesContainer = document.querySelector('.bubbles');
+            const bubbleCount = 8;
+
+            for (let i = 0; i < bubbleCount; i++) {
+                const bubble = document.createElement('div');
+                bubble.className = 'bubble';
+
+                const size = Math.random() * 100 + 40;
+                bubble.style.width = size + 'px';
+                bubble.style.height = size + 'px';
+                bubble.style.left = Math.random() * 100 + '%';
+                bubble.style.top = Math.random() * 100 + '%';
+
+                const colors = [
+                    'rgba(99, 102, 241, 0.2)',
+                    'rgba(139, 92, 246, 0.2)',
+                    'rgba(6, 182, 212, 0.3)',
+                    'rgba(16, 185, 129, 0.2)'
+                ];
+                bubble.style.background = colors[Math.floor(Math.random() * colors.length)];
+                bubble.style.animationDelay = Math.random() * 6 + 's';
+                bubble.style.animationDuration = (Math.random() * 4 + 6) + 's';
+
+                bubblesContainer.appendChild(bubble);
+            }
+        }
+
+        /* 事件綁定 */
+        function bindEvents() {
+            window.addEventListener('scroll', handleScroll);
+            document.addEventListener('keydown', handleKeyboard);
+
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        card.click();
+                    }
+                });
+            });
+        }
+
+        function handleScroll() {
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const scrollPercent = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+            progressBar.style.width = scrollPercent + '%';
+
+            if (scrollTop > 100) {
+                navbar.classList.add('scrolled');
+                scrollTopBtn.classList.add('visible');
+            } else {
+                navbar.classList.remove('scrolled');
+                scrollTopBtn.classList.remove('visible');
+            }
+        }
+
+        function handleKeyboard(e) {
+            if (e.key === 'Escape') goBack();
+            else if (e.ctrlKey && e.key === 'Home') scrollToTop();
+        }
+
+        /* Page 切換輔助 */
+        function hideAllPages() {
+            homepage.style.display = 'none';
+            letterContent.classList.remove('active');
+            handbookIndex.classList.remove('active');
+            subjectGuide.classList.remove('active');
+            articleDetail.classList.remove('active');
+            document.querySelectorAll('.dynamic-category-page').forEach(p => p.remove());
+        }
+
+        /* View 轉換函式 */
+        function showHomepage(updateURL = true) {
+            if (updateURL) updateQuery({ view: 'homepage', cat: null, id: null });
+            navigationHistory = [];
+            currentView = 'homepage';
+            hideAllPages();
+            homepage.style.display = 'flex';
+            backButton.classList.remove('active');
+
+            const typewriter = document.querySelector('.typewriter');
+            if (typewriter) {
+                typewriter.style.animation = 'none';
+                setTimeout(() => typewriter.style.animation = 'typing 3.5s steps(40, end), blink-caret 0.75s step-end infinite', 10);
+            }
+        }
+
+        function showLetter(updateURL = true) {
+            if (updateURL) updateQuery({ view: 'letter', cat: null, id: null });
+            showContentLoading();
+            setTimeout(() => {
+                navigationHistory.push(currentView);
+                currentView = 'letter';
+                hideAllPages();
+                letterContent.classList.add('active');
+                backButton.classList.add('active');
+                hideContentLoading();
+                scrollToTop();
+            }, 300);
+        }
+
+        function showHandbookIndex(updateURL = true) {
+            if (updateURL) updateQuery({ view: 'index', cat: null, id: null });
+            showContentLoading();
+            setTimeout(() => {
+                navigationHistory.push(currentView);
+                currentView = 'index';
+                hideAllPages();
+                handbookIndex.classList.add('active');
+                backButton.classList.add('active');
+                hideContentLoading();
+                scrollToTop();
+            }, 300);
+        }
+
+        function showSubjectGuide(updateURL = true) {
+            if (updateURL) updateQuery({ view: 'subject', cat: null, id: null });
+            showContentLoading();
+            setTimeout(() => {
+                navigationHistory.push(currentView);
+                currentView = 'subject';
+                hideAllPages();
+                subjectGuide.classList.add('active');
+                backButton.classList.add('active');
+                hideContentLoading();
+                scrollToTop();
+            }, 300);
+        }
+
+        function showCategory(category, updateURL = true) {
+            if (updateURL) updateQuery({ view: 'category', cat: category, id: null });
+            if (category === 'academic') { showSubjectGuide(updateURL); return; }
+
+            showContentLoading();
+            setTimeout(() => {
+                navigationHistory.push(currentView);
+                currentView = 'category';
+                currentCategory = category;
+                hideAllPages();
+                createCategoryPage(category);
+                hideContentLoading();
+                scrollToTop();
+            }, 300);
+        }
+
+        function createCategoryPage(category) {
+            const categoryData = articles[category] || [];
+            const categoryNames = { life: '校園生活', stories: '小故事', requirements: '畢業門檻' };
+
+            const categoryPage = document.createElement('section');
+            categoryPage.className = 'article-detail active dynamic-category-page';
+            categoryPage.innerHTML = `
+                <div class="article-header">
+                    <h1>${categoryNames[category] || '文章列表'}</h1>
+                    <p>選擇您想要閱讀的文章</p>
+                </div>
+                <div class="article-content">
+                    <div class="category-grid">
+                        ${categoryData.map(article => `
+                            <div class="category-card" onclick="showArticle('${article.id}')" tabindex="0">
+                                <h3 class="category-title">${article.title}</h3>
+                                <p class="category-description">${article.excerpt}</p>
+                                <div style="margin-top: 1rem; color: var(--text-secondary); font-size: 0.9rem;">
+                                    ${article.readTime}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            document.querySelector('.main-content').appendChild(categoryPage);
+            backButton.classList.add('active');
+
+            categoryPage.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        card.click();
+                    }
+                });
+            });
+        }
+
+        function showArticle(articleId, updateURL = true) {
+            if (updateURL) updateQuery({ view: 'article', id: articleId, cat: null });
+            showContentLoading();
+            setTimeout(() => {
+                let article = null;
+                for (const categoryKey in articles) {
+                    article = articles[categoryKey].find(a => a.id === articleId);
+                    if (article) break;
+                }
+                if (!article) { hideContentLoading(); return; }
+
+                navigationHistory.push(currentView);
+                currentView = 'article';
+                hideAllPages();
+                articleDetail.classList.add('active');
+                backButton.classList.add('active');
+
+                document.getElementById('articleTitle').textContent = article.title;
+                document.getElementById('articleCategory').textContent = article.categoryName;
+                document.getElementById('articleDate').textContent = article.date + ' • ' + article.readTime;
+
+                const template = document.getElementById(articleId + 'Template');
+                if (template) document.getElementById('articleContent').innerHTML = template.innerHTML;
+
+                hideContentLoading();
+                scrollToTop();
+            }, 300);
+        }
+
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[onclick="showTab('${tabName}')"]`).classList.add('active');
+
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.getElementById(tabName + 'Tab').classList.add('active');
+        }
+
+        function goBack() {
+            if (navigationHistory.length > 0) {
+                const previousView = navigationHistory.pop();
+                switch (previousView) {
+                    case 'homepage': updateQuery({ view: 'homepage', cat: null, id: null }); break;
+                    case 'letter': updateQuery({ view: 'letter', cat: null, id: null }); break;
+                    case 'index': updateQuery({ view: 'index', cat: null, id: null }); break;
+                    case 'subject': updateQuery({ view: 'subject', cat: null, id: null }); break;
+                    case 'category': updateQuery({ view: 'category', cat: currentCategory, id: null }); break;
+                    default: updateQuery({ view: 'homepage', cat: null, id: null });
+                }
+                renderByUrl(false);
+            } else {
+                showHomepage();
+            }
+        }
+
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+    </script>
+
+    <script>
+        /* PWA Service Worker 註冊 */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(reg => console.log('SW 註冊成功：', reg.scope))
+                    .catch(err => console.error('SW 註冊失敗：', err));
+            });
+        }
+    </script>
+</body>
+
+</html>
