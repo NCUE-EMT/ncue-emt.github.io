@@ -13,7 +13,13 @@ self.addEventListener('install', event => {
         '/manifest.json',
         '/offline.html',
         '/icons/192.png',
-        '/icons/512.png'
+        '/icons/512.png',
+        '/icons/favicon-16x16.png',
+        '/icons/favicon-32x32.png',
+        '/icons/favicon-48x48.png',
+        '/icons/apple-touch-icon.png',
+        '/icons/android-chrome-192x192.png',
+        '/icons/emt-logo-1200x630.png'
       ]);
     })
   );
