@@ -1607,6 +1607,18 @@
         }
 
         function goBack() {
+            // 解析 URL 上的 view 參數
+            const params = new URLSearchParams(window.location.search);
+            const view = params.get('view');
+
+            // 如果目前是 index，就回到首頁
+            if (view === 'index') {
+                showHomepage();
+                updateQuery({ view: 'homepage', cat: null, id: null });
+                return;
+            }
+            
+            // 其餘的路由回到預設歷史紀錄設定
             if (navigationHistory.length > 0) {
                 const previousView = navigationHistory.pop();
                 switch (previousView) {
@@ -1615,7 +1627,7 @@
                     case 'index': updateQuery({ view: 'index', cat: null, id: null }); break;
                     case 'subject': updateQuery({ view: 'subject', cat: null, id: null }); break;
                     case 'category': updateQuery({ view: 'category', cat: currentCategory, id: null }); break;
-                    default: updateQuery({ view: 'homepage', cat: null, id: null });
+                    default: updateQuery({ view: 'index', cat: null, id: null });
                 }
                 renderByUrl(false);
             } else {
