@@ -436,6 +436,19 @@
             line-height: 1.8;
         }
 
+        .tab-content p {
+            margin-bottom: 1rem;
+        }
+
+        .tab-content h2 {
+            color: var(--primary-color);
+            margin: 1.5rem 0 1rem 0;
+        }
+
+        .tab-content h3{
+            color: var(--accent-color);
+        }
+
         .tab-content.active {
             display: block;
         }
@@ -880,7 +893,7 @@
         <section class="letter-content" id="letterContent">
             <div class="letter-header">
                 <h1>給科技系學弟妹的話</h1>
-                <p>2025年8月撰寫</p>
+                <p>3 分鐘</p>
             </div>
             <div class="letter-body">
                 <h3>親愛的學弟妹們：</h3>
@@ -1291,16 +1304,16 @@
         /* 文章數據與狀態 */
         const articles = {
             life: [
-                { id: 'dorm', title: '宿舍生活指南', excerpt: '十宿生活環境、網路設定、規範制度、入住準備清單...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '6 分鐘' },
-                { id: 'school', title: '學校系統服務', excerpt: 'SSO入口、選課技巧、請假制度、停車申請、網路連線...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '5 分鐘' },
-                { id: 'transport', title: '交通指南', excerpt: '校區距離、交通工具選擇、公車路線、機車托運注意事項...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '3 分鐘' },
-                { id: 'opportunities', title: '課外發展機會', excerpt: '大專生計畫、教授研究、MOOC課程、實習工讀機會...', category: 'life', categoryName: '校園生活', date: '2025/08', readTime: '7 分鐘' }
+                { id: 'dorm', title: '宿舍生活指南', excerpt: '十宿生活環境、網路設定、規範制度、入住準備清單...', category: 'life', categoryName: '校園生活', date: '', readTime: '6 分鐘' },
+                { id: 'school', title: '學校系統服務', excerpt: 'SSO入口、選課技巧、請假制度、停車申請、網路連線...', category: 'life', categoryName: '校園生活', date: '', readTime: '5 分鐘' },
+                { id: 'transport', title: '交通指南', excerpt: '校區距離、交通工具選擇、公車路線、機車托運注意事項...', category: 'life', categoryName: '校園生活', date: '', readTime: '3 分鐘' },
+                { id: 'opportunities', title: '課外發展機會', excerpt: '大專生計畫、教授研究、MOOC課程、實習工讀機會...', category: 'life', categoryName: '校園生活', date: '', readTime: '7 分鐘' }
             ],
             stories: [
-                { id: 'stories', title: '學長姐經驗分享', excerpt: '學習心得、生活建議、資源分享、實習經驗、給學弟妹的話...', category: 'stories', categoryName: '小故事', date: '2025/08', readTime: '5 分鐘' }
+                { id: 'stories', title: '學長姐經驗分享', excerpt: '學習心得、生活建議、資源分享、實習經驗、給學弟妹的話...', category: 'stories', categoryName: '小故事', date: '', readTime: '5 分鐘' }
             ],
             requirements: [
-                { id: 'requirements', title: '畢業門檻要求', excerpt: '必修課程、選修學分、通識講座、資訊能力門檻...', category: 'requirements', categoryName: '畢業門檻', date: '2025/08', readTime: '4 分鐘' }
+                { id: 'requirements', title: '畢業門檻要求', excerpt: '必修課程、選修學分、通識講座、資訊能力門檻...', category: 'requirements', categoryName: '畢業門檻', date: '', readTime: '4 分鐘' }
             ]
         };
 
