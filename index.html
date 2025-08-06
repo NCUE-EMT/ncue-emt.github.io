@@ -25,6 +25,7 @@
     <meta name="twitter:description" content="最完整的彰化師大科技系新生入門指南..." />
     <meta name="twitter:image" content="/icons/emt-logo-1200x630.png" />
 
+    <!-- 樣式區塊 -->
     <style>
         :root {
             --primary-color: #aaaada;
@@ -445,7 +446,7 @@
             margin: 1.5rem 0 1rem 0;
         }
 
-        .tab-content h3{
+        .tab-content h3 {
             color: var(--accent-color);
         }
 
@@ -743,6 +744,8 @@
             max-width: 900px;
         }
     </style>
+
+    <!-- 轉場特效區塊 -->
     <style>
         /* 所有主要區塊初始隱藏 */
         .homepage,
@@ -762,7 +765,7 @@
             animation: fadeInSection 0.5s ease-out forwards;
         }
 
-        /* 後續依序讓特定子元素「延遲」淡入 */
+        /* 後續依序讓特定子元素延遲淡入 */
         @keyframes fadeInSection {
             from {
                 opacity: 0;
@@ -799,7 +802,7 @@
             animation: fadeInUp 0.5s ease-out 0.7s both;
         }
 
-        /* —— 手冊索引（.handbook-index） —— */
+        /* 手冊索引（.handbook-index）特效 */
         .handbook-index.active .index-title {
             animation: fadeInUp 0.5s ease-out 0.3s both;
         }
@@ -812,7 +815,7 @@
             animation: fadeInUp 0.5s ease-out 0.7s both;
         }
 
-        /* —— 學科指南（.subject-guide） —— */
+        /* 學科指南（.subject-guide）特效 */
         .subject-guide.active .article-header {
             animation: fadeInUp 0.3s ease-out 0.2s both;
         }
@@ -826,7 +829,7 @@
             animation: fadeInUp 0.2s ease-out 0.2s both;
         }
 
-        /* —— 文章詳情（.article-detail） —— */
+        /* 文章詳情（.article-detail） */
         .article-detail.active .article-header {
             animation: fadeInUp 0.5s ease-out 0.3s both;
         }
@@ -1050,7 +1053,7 @@
                 </div>
             </div>
             <div class="article-content" id="articleContent">
-                <!-- 文章內容將通過 JavaScript 動態載入 -->
+                <!-- 文章內容透過 JavaScript 動態載入 -->
             </div>
         </article>
     </main>
